@@ -2765,12 +2765,19 @@ ol {
 /* Wide Mobile = 480px */
 
 @media only screen and (max-width: 767px) {	
+	.slide-num {
+		display: none;
+	}
+	.slider__progress {
+		display: none;
+	}
 	.hero__text h2 {
 		display: none;
 		font-size: 34px;
 		line-height: 45px;
 	}
 	.hero__items {
+		display: none;
 		height: 710px;
 		display: -webkit-box;
 		display: -ms-flexbox;
@@ -2906,9 +2913,11 @@ ol {
 		width: 100%;
 	}
 	.hero__slider.owl-carousel .owl-nav button {
+		display: none;
 		left: 0;
 	}
 	.hero__slider.owl-carousel .owl-nav button.owl-next {
+		display: none;
 		right: 0;
 	}
 	.hero__text h2 {
@@ -2919,7 +2928,7 @@ ol {
 		right: 0;
 		left: 0;
 		margin: 0 auto;
-		bottom: 100px;
+		bottom: 50px;
 	}
 	.slide-num {
 		bottom: 25px;
