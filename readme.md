@@ -4,5 +4,5 @@
 
 This is my personal web page. The tree is Araucaria araucana, photo taken in Westonbirt Arboretum.
 
-[View here](guyreading.github.io "Click me!")
+[View webpage here](https://guyreading.github.io/ "Click me!")
 
