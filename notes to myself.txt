@@ -1,7 +1,0 @@
-.hero__text .primary-btn {
-
-.hero__text .more_btn {
-
-.hero__slider.owl-carousel .owl-nav button {
-
-.hero__slider.owl-carousel .owl-nav button.owl-next {

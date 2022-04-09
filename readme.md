@@ -2,7 +2,7 @@
 
 # Personal web page
 
-This is my personal web page. The tree is Araucaria araucana, photo taken in Westonbirt Arboretum.
+This is my personal web page. The tree is Araucaria Araucana (a monkey puzzle tree), photo taken in Westonbirt Arboretum.
 
 [View webpage here](https://guyreading.github.io/ "Click me!")
 
