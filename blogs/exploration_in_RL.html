@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+
+<head>
+	<link rel='icon' type='image/x-icon' href='../favicon.ico' />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://latex.now.sh/style.min.css" />
+    <meta property="og:title" content="On Reinforcement Learning">
+</head>
+
+
+<body id="top" class>
+    <center><a href="../blog.html">Back to Blogs Home</a></center>
+    <h1>On Exploration in Reinforcement Learning</h1>
+    <p class="author">Guy Reading <br> April 24, 2022</p>
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            Some ponderings on to the nature of current Reinforcement Learning: whether we can do better than learning from statistical exploration, and what this would look like.
+        </p>
+    </div>
+    <main>
+        <article>
+            <h2>What We Currently Have</h2>
+            <h3>Introduction</h3>
+            <p>
+                There has been a series of success stories regarding the application of Reinforcement Learning (RL) in game settings, including AlphaGo, AlphaStar, OpenAI Five (with DOTA 2), 
+                as well as in the gamification of real-world challenges such as <a href="https://www.deepmind.com/blog/accelerating-fusion-science-through-learned-plasma-control">controlling the plasma shape in nuclear fusion reactors</a> and <a href="https://ai.googleblog.com/2020/04/chip-design-with-deep-reinforcement.html">designing computer chips</a>. 
+                These are inspiring and exhilarating achievements, but when we look under the car bonnet to discover how it all works, we might become disillusioned to find that it is all essentially statistics on steroids. 
+                The fact that this works at all is a testament to the unreasonable effectiveness of (statistical) mathematics in game playing environments, which is ironic, as that is exactly what seems to be missing during this process: reasoning. 
+                Do we need reasoning? How can we improve the current state of Reinforcement Learning? 
+            </p>
+
+            <h3>The Bitter Lesson</h3>
+            <p>
+                One argument against a more sophisticated, human-centric approach to RL comes from <a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">The Bitter Lesson</a>, by Sutton.
+                In short, Sutton argues that as progress gives more compute power, the extra brute force from more compute ends up beating any hand-made features painstakingly made by humans with specific domain expertise in the intervening time. 
+                To me, though, The Bitter Lesson falls short in two main ways. <br><br>
+
+                The first is that The Bitter Lesson is the ML equivalent of The Infinite Monkey Theorem. 
+                Yes, you could employ more monkeys to increase the chance of one of them writing Shakespeare. 
+                But we don't have infinite compute (monkeys), and never will. <br><br>
+                
+                The second reason I think The Bitter Lesson falls short, for RL in particular, is that it only addresses one part of the RL problem: the compute problem (fitting a model with existing data). 
+                But another core part of the RL problem is in creating data by exploring the environment, which our model subsequently gets trained on - and this has nothing to do with brute-force compute. 
+                The component responsible for this task is the RL explorer. 
+                Even if The Bitter Leson holds, what use would it be to have infinite compute on a very small or mis-representative dataset? 
+                What’s more, some “games” carry a heavy weight for loss, therefore even if compute was infinite, we’d need to “explore” efficiently to minimise loss: this is especially true when the games are more real-world. 
+                With all that in mind, let’s explore some explorers to see where the current state of the art is and whether any improvements can be made.
+            </p>
+            <h3>Explore & Compute</h3>
+            <p>
+                There are two main kinds of explorers for RL that we could consider. 
+                The first is an on-policy explorer such as PPO.  
+                On-policy explorers use the same policy (usually a NN) that you've trained on the existing data – 
+                I.e. the model being trained is also responsible setting the direction to collect new data for itself for more training later (with a lot of randomness also helping to set direction). 
+                This is surprisingly naïve but has shown remarkably good results in the form of PPO, with its application to DOTA 2, for example. 
+                However, care needs to be taken that the policy doesn’t get trained too heavily from any one set of games: as this would heavily incentive undertaking the set of actions that gave the best results to-date, which may be a local minima. 
+                <br><br>
+                The second main explorer is an off-policy explorer. 
+                These are separate from the policy that gets trained on the data. 
+                If you treat the policy to be trained as an unconscious quick reaction (we’ll revisit analogy this later), you could treat the off-policy explorer as conscious, thoughtful decision-making, trying to improve performance (or at least – they have the potential for this). 
+                There have been quite a few different off-policy explorers to-date. 
+                With DQNs, there is a dedicated explorer which essentially explorers based on trading off pure “exploration” (random direction) with “exploitation” (looking at the best previous result and continuing in that direction). 
+                However, like the on-policy explorer, the use of randomness as the main mechanism for exploration still seems naïve.  
+                <br><br>
+                There are of course, more exotic explorers. 
+                In AlphaGo, two initial policies were trained on expert-level play in a supervised learning fashion. 
+                These policies were then applied as explorers to guide training for a Monte Carlo Tree Search, with only good actions (determined from the existing policies) being taken to subsequently train the MCTS model. 
+                In this way, pruning of the tree branches can be achieved by neglecting to populate the tree with poor actions and an unfeasibly large tree (due to Go’s branching factor and depth) can be avoided.  
+                <br><br>
+                Although AlphaGo uses a hybrid supervised-RL approach, it still has an RL exploration component, and the above methods still may run into pitfalls relative to fully supervised learning methods, where the data owner is in control of all data the model sees. 
+                With supervised learning, the data owner is hopefully mindful to include varied enough representations of objects (if a classification task) to allow the network to generalise, however no such guarantees can be given with the data RL explorers uncover for RL models.  
+                <br><br>
+                Another issue with the above methods is that the main mechanism for exploration is to take random actions. 
+                This is by far the most simple approach and very data inefficient. 
+                It would be preferential to move away from naïve random search but anything more sophisticated quickly become extremely complicated. 
+                This shouldn't stop us for looking into how more sophisticated methods may be employed, however. 
+                Ultimately, statistical methods rely on looking into the past. 
+                They look at previous data to understand patterns and trends. 
+                Random exploration, too, relies on the idea that given enough variation in moves, we have enough data to make brute-force statistical modelling to work. 
+                Other approaches, such as causal reasoning, can look into the future. 
+                It can make hypotheses about what may be possible based on rules and create experiments to test these rules (gaining data for statistical analysis). 
+                This is important because given a large branching factor and long time-scales, some set of actions become infinitesimally rare. 
+                Your neural network cannot learn from data that it hasn’t been given. 
+                In the same way that AlphaGo can prune its MCTS algorithm using previous policies so that only good options are explored, perhaps causal reasoning can do the same. 
+                <br><br>
+                Inspiration for a more causal explorer has come from looking at how we naturally problem-solve. 
+                Human “explorers” are a lot more complex with the way information is discovered. 
+                We apply appropriate priors that have been learnt from outside the observation of the environment and make sense of rules through many different techniques and reasoning methods. 
+                What does this look like in practice? 
+                Let's look at how humans improve on Trackmania as an example. 
+
+            <h2>Why We Need More Than Random Exploration </h2>
+            <h3>Looking to Trackmania for Why We Need Causal Reasoning </h3>
+            <p>
+                One example that gives interesting insight into the case for causal reasoning in aiding exploration is by assessing how to optimise play in a game like Trackmania. 
+                Throughout the last 10 years there has been an active community working towards improvements with track times, be it evolutionary improvement such as optimising cornering or revolutionary improvement such as finding new routes. 
+                One particularly inspiring example is the <a href="https://www.youtube.com/watch?v=_b67SC7Y4qA">progress made over the D07-Race</a> (skip to 16 minutes in for a particular example I’ll look into). 
+                In the final track skip, human players formed a hypothesis that a very specific and technical jump could be used to reduce lap time. 
+                What was this hypothesis formed on? 
+                It was causal reasoning based on priors informed by physics – watching the trajectory of the car, forming an idea of what kinds of trajectories could be taken, imagining what the trajectory would look like if the car took the perfect line to test the hypothesis.  
+                <br><br>
+                Of course, an imagination/hypothesis could be wrong, but this is still in a class of its own relative to kind of exploration we see with RL agents today. 
+                And after many hundreds of cumulative hours by the drivers looking to validate their hypothesis, they were finally vindicated: one gamer eventually completed the jump. 
+                The fact that this was such a difficult technical jump in such a particular sub-section of the track makes me imagine how infinitesimally small the sequence of actions (given the branching factor of the game) was within the space of possibilities, and what the chances of this happening would be, given random exploration. 
+                Not only that, but given how RL agents tend to balance exploitation of previous best results with exploration, would the agent just give up and start exploiting what it currently knows before ever managing to complete the jump?
+            </p>
+            <h3>The Role of the Neural Network When Using Causal Reasoning: Thinking Fast and Slow</h3>
+            <p>
+
+
+
+                Kahneman, athor of Thinking Fast and Slow, wrote that once chess players become masters of their game, they instictively have a collection of good actions that comes to their mind when assessing a state of the game. 
+                There is no system 2 planning when you're a master. However, to get to a master level, there does need to be system 2 planning. 
+                You need to calculate and generalise why certain events can occur in the games. 
+                When you do this enough, you can eventually recognise good actions even without doing the system 2 generalisation. 
+                The reason for saying this is that I believe a neural network is able to learn "instinctively", in a system 1 way, what is the best move, but for it to do so it needs to be guided by a system 2.
+                <br><br>
+                In AlphaGo, this system 2 was in the form of a monte carlo tree. 
+                The role of the monte carlo tree for AlphaGo is...
+                However this is still a very basic system 2. 
+                Humans' system 2 are a lot more complex: we perform reasoning based on priors, calculations and predictions that expand outside reasonable inference from the pure observation of the environment. 
+                For example, 
+                <br><br>
+                The problem is, you don't necessarily need a model (model-based RL) of your agent to learn efficiently, but you do need priors and common sense. 
+                This is extremely difficult to represent and transfer to current machine learning models. 
+                Humans come to the table to play 
+
+
+
+            </p>
+        </article>
+    </main>
+
+</body>
