@@ -19,7 +19,7 @@
 <body id="top" class>
     <center><a href="../blog.html">Back to Blogs Home</a></center>
     <h1>On Exploration in Reinforcement Learning</h1>
-    <p class="author">Guy Reading <br> April 24, 2022</p>
+    <p class="author">Guy Reading <br> April 26, 2022</p>
     <div class="abstract">
         <h2>Abstract</h2>
         <p>
@@ -115,27 +115,99 @@
             </p>
             <h3>The Role of the Neural Network When Using Causal Reasoning: Thinking Fast and Slow</h3>
             <p>
-
-
-
-                Kahneman, athor of Thinking Fast and Slow, wrote that once chess players become masters of their game, they instictively have a collection of good actions that comes to their mind when assessing a state of the game. 
-                There is no system 2 planning when you're a master. However, to get to a master level, there does need to be system 2 planning. 
+                Daniel Kahneman, author of Thinking Fast and Slow, wrote that once chess players have become masters of their game; 
+                they instinctively have a collection of good moves that comes to their mind. 
+                Of course, there is still slow, thoughtful planning (system 2, in the book) even when you're a master but the initial unconscious choices (system 1) that come to mind are naturally strong. 
+                However, to get to a master level, there does need to be system 2 planning. 
                 You need to calculate and generalise why certain events can occur in the games. 
-                When you do this enough, you can eventually recognise good actions even without doing the system 2 generalisation. 
-                The reason for saying this is that I believe a neural network is able to learn "instinctively", in a system 1 way, what is the best move, but for it to do so it needs to be guided by a system 2.
+                When you do this enough, you eventually recognise good actions even without doing the slow system 2 computation. 
+                The reason for saying this is that I believe neural networks are able to learn "instinctively", in a system 1 way, but for it to do so it needs to be guided by a system 2. 
+                This is akin to training an RL policy (system 1) on data so that it can quickly map the current observation with a strong action, however the planning to gather the best data requires a good explorer (system 2). 
+                Indeed, at the AAAI-2020 fireside conversation, Kahneman himself said that he currently only sees evidence of system 1 behaviour from our current NN-based ML models (in supervised learning).  
                 <br><br>
-                In AlphaGo, this system 2 was in the form of a monte carlo tree. 
-                The role of the monte carlo tree for AlphaGo is...
-                However this is still a very basic system 2. 
-                Humans' system 2 are a lot more complex: we perform reasoning based on priors, calculations and predictions that expand outside reasonable inference from the pure observation of the environment. 
-                For example, 
+                The problem for explorers again to back to the fact that as soon as you want something more than random exploration it gets very complicated. 
+                Let’s look at the complications in-depth and what a more sophisticated explorer may look like. 
+            </p>
+            <h2>Opinions & Ideas of What a Future Explorer May Entail</h2>
+            <h3>Initial Considerations</h3>
+            <p>
+                Humans have grown up with physics-based priors and instinctively understand trajectories of cars if they were to leave the ground – indeed, most games are built from a foundation of rules that mirror real life and that humans have already unconsciously integrated into their pattern recognition. 
+                Part of the problem is the unconscious integration of these priors into future calculations and forgetting that RL agents wouldn’t know them, which makes it seem to humans like an easier problem to solve than it really is. 
                 <br><br>
-                The problem is, you don't necessarily need a model (model-based RL) of your agent to learn efficiently, but you do need priors and common sense. 
-                This is extremely difficult to represent and transfer to current machine learning models. 
-                Humans come to the table to play 
-
-
-
+                The first complication for an explorer that uses more than randomness is that it needs priors to work from. 
+                This could come in two forms: game-specific priors to be applied (~ANI) or general common sense (~AGI). 
+                The first would be difficult and time consuming and the second would be extremely difficult. 
+                Game-specific priors could be pre-written by developers or a component could be written for the explorer to potentially learn them.  
+                <br><br>
+                What’s more, the whole situation is very recursive. 
+                How do you achieve efficient data collection to train your model, if you don’t already have something that is able to gather data in areas that it thinks will be promising (and thus knows in advance what are good strategies to get data on = a good model itself)? 
+                Perhaps the answer comes in some form of weak learner combination, like AlphaGo used. 
+                Can multiple weak explorers (physics-based hypotheses + current statistical guesses) contribute to form one strong explorer? 
+                Could the explorer be trained throughout training, too, to help direct the main policy? Could improvement work in a feedback-related way, training an explorer to look in better areas, which itself feeds into training a more sophisticated explorer (and policy), recursing in some way? 
+                There are many possible answers, and the following is just one proposal. 
+            </p>
+            <h3>A Pseudo-Implementation </h3>
+            <p>
+                We want an off-policy model where the policy is given data to learn from a System 2 explorer. 
+                By disconnecting the policy from the explorer, we can make the explorer more complex. 
+                The policy may help in exploitation, as on-policy agents do, however it would only be one mechanism from a number of possibilities. 
+                The system 2 would comprise of multiple components, looking at the set of observations in different ways: 
+                <br>
+                <ol>
+                    <li>
+                        One component would be your common random-choice based explorer, which can be used if no better options are detected. 
+                    </li>
+                    <li>
+                        The trained policy to-date can assist in exploiting learnt strong actions.  
+                    </li>
+                    <li>
+                        Another component looks to learn events which trigger certain specific rules. 
+                        These rules could be considered as small sections where we have a model for the game (model-based RL). 
+                        A collection of event-driven rules can be learnt to be triggered at various times. 
+                        This component may take over to drive action choice and test hypotheses of rules, or discover more data to uncover rules. 
+                    </li>
+                    <li>
+                        Expansion of the explorer over time, with the addition of other components which utilise different reasoning/strategy methods.
+                    </li>
+                    <li>
+                        A top level controller to trade-off between components. 
+                        Just as a trade-off is found with current explorers between exploration and exploitation, as more components are added, logic will need to be implemented to choose which component controls exploration at any time. 
+                        With triggered events, these may be straight forward, if previous found triggers lead to high confidence of a set of predictions taking place, it is obvious to transfer control to that explorer. 
+                    </li>
+                </ol>
+                An expansion of point (3) can be made, as this is worryingly vague. 
+                Complications (and further break-down) with physics-based priors, which may constitute a large section of point (3): 
+                <ol>
+                    <li>
+                        Need to recognise the event that can initialise a physics-based hypothesis – in the case of the jump, the event is the car leaving the ground and catching air (the car then starts to follow a physics-based trajectory). 
+                    </li>
+                    <li>
+                        Need to represent the environment in the correct way, which might not be related well to the initial observation the agent is given. 
+                        For example, with Atari games, the agent is often just given the screen print out and expected to make sense if it. 
+                        This may be the case with an agent for a game like Trackmania. 
+                        However, this isn’t what humans eventually use to make models: they may see a point source (the car – centre of gravity) which moves along a plane (the track). 
+                        The point source has co-ordinates regarding its position and vector for its direction. 
+                        All these things are implicitly computed in the head of players but not represented in the raw observation. 
+                    </li>
+                    <li>
+                        Once the observations are in a state that is simple for equation learning, need to learn the equation that governs the trajectory. 
+                        This means that, previously, the event needs to be recognised as something that initialises a set of rules that can be learnt. 
+                        And then sufficient data needs to be collected to learn the rule. 
+                        Recent advances with application of symbolic regression within networks may be a solution in this regard. 
+                    </li>
+                    <li>
+                        Can then continue to predict the subsequent observations/car trajectory until the rules cease to apply anymore (when the car lands). 
+                        We need to recognise the event that terminates the rules. 
+                    </li>
+                </ol>
+                Once these event-driven rules have been learnt, another job is to take them and generalise them to other games where they can be applied. As had been noted above: many games use physics-based priors. This is a level of complexity larger, again, and can tentatively stipulated that is moving into “common sense” territory of AI or even AGI, which is a bold claim and even bolder task to uptake. 
+            </p>
+            <h3>Final Thoughts</h3>
+            <p>
+                There is a debate of whether causal reasoning can emerge from NNs given enough compute and network size, based on an argument that as our own brains got larger, humans gained the capacity to reason and form counterfactuals where other animals with smaller brains cannot. 
+                But why take the chance on it emerging when we don’t truly understand how the human brain works (so we can't even be sure our ML NNs have the key pieces of architecture in place to help give rise to emergence if it can) and when we can explicitly write causal reasoning logic with our current languages? 
+                <br><br>
+                Although there are many complications with creating a more sophisticated, human-inspired explorer to which there are no strong solutions to-date, it does still seem reasonable to look for a more sophisticated way of exploring space in games, given the weak manner in which exploration is undertaken currently. 
             </p>
         </article>
     </main>
