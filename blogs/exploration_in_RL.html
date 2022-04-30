@@ -41,7 +41,7 @@
             <h3>The Bitter Lesson</h3>
             <p>
                 One argument against a more sophisticated, human-centric approach to RL comes from <a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">The Bitter Lesson</a>, by Sutton.
-                In short, Sutton argues that as progress gives more compute power, the extra brute force from more compute ends up beating any hand-made features painstakingly made by humans with specific domain expertise in the intervening time. 
+                In short, Sutton argues that, as progress gives more compute power, the extra brute force from more compute ends up beating any hand-made features painstakingly made by humans with specific domain expertise in the intervening time. 
                 To me, though, The Bitter Lesson falls short in two main ways. <br><br>
 
                 The first is that The Bitter Lesson is the ML equivalent of The Infinite Monkey Theorem. 
@@ -49,35 +49,36 @@
                 But we don't have infinite compute (monkeys), and never will. <br><br>
                 
                 The second reason I think The Bitter Lesson falls short, for RL in particular, is that it only addresses one part of the RL problem: the compute problem (fitting a model with existing data). 
-                But another core part of the RL problem is in creating data by exploring the environment, which our model subsequently gets trained on - and this has nothing to do with brute-force compute. 
+                But another core part of the RL problem is creating data by exploring the environment, which our model subsequently gets trained on, which has nothing to do with brute-force compute. 
                 The component responsible for this task is the RL explorer. 
-                Even if The Bitter Leson holds, what use would it be to have infinite compute on a very small or mis-representative dataset? 
-                What’s more, some “games” carry a heavy weight for loss, therefore even if compute was infinite, we’d need to “explore” efficiently to minimise loss: this is especially true when the games are more real-world. 
+                Even if The Bitter Leson holds, what use would it be to have infinite compute on a very small or misrepresentative dataset? 
+                What’s more, some “games” carry a heavy weight for loss. 
+                Therefore even if compute was infinite, we’d need to “explore” efficiently to minimise loss; this is especially true when the games are more real-world. 
                 With all that in mind, let’s explore some explorers to see where the current state of the art is and whether any improvements can be made.
             </p>
-            <h3>Explore & Compute</h3>
+            <h3>Explore and Compute</h3>
             <p>
                 There are two main kinds of explorers for RL that we could consider. 
-                The first is an on-policy explorer such as PPO.  
-                On-policy explorers use the same policy (usually a NN) that you've trained on the existing data – 
-                I.e. the model being trained is also responsible setting the direction to collect new data for itself for more training later (with a lot of randomness also helping to set direction). 
-                This is surprisingly naïve but has shown remarkably good results in the form of PPO, with its application to DOTA 2, for example. 
-                However, care needs to be taken that the policy doesn’t get trained too heavily from any one set of games: as this would heavily incentive undertaking the set of actions that gave the best results to-date, which may be a local minima. 
+                The first is an on-policy explorer, such as PPO.  
+                On-policy explorers take the policy (usually a NN) that you've trained on the existing data and use it to dictate exploration for new data. 
+                Put another way, the model being trained is also responsible for setting the direction to collect new data for itself to train on later (with a lot of randomness also helping to set direction). 
+                This is surprisingly naïve but has shown remarkably good results in the form of PPO with its application to DOTA 2, for example. 
+                However, care needs to be taken that the policy doesn’t get trained too heavily from any one set of games, as this would heavily incentive undertaking the set of actions that gave the best results to-date, which may be a local minima. 
                 <br><br>
                 The second main explorer is an off-policy explorer. 
                 These are separate from the policy that gets trained on the data. 
-                If you treat the policy to be trained as an unconscious quick reaction (we’ll revisit analogy this later), you could treat the off-policy explorer as conscious, thoughtful decision-making, trying to improve performance (or at least – they have the potential for this). 
-                There have been quite a few different off-policy explorers to-date. 
-                With DQNs, there is a dedicated explorer which essentially explorers based on trading off pure “exploration” (random direction) with “exploitation” (looking at the best previous result and continuing in that direction). 
+                If you treat the policy to be trained as an unconscious quick reaction (we’ll revisit analogy this later), you could treat the off-policy explorer as conscious, thoughtful decision-making, trying to improve performance. 
+                There have been many different off-policy explorers to date. 
+                With one such off-policy model, the DQN, there is a dedicated explorer which essentially explorers based on trading off pure “exploration” (random direction) with “exploitation” (looking at the best previous result and continuing in that direction). 
                 However, like the on-policy explorer, the use of randomness as the main mechanism for exploration still seems naïve.  
                 <br><br>
-                There are of course, more exotic explorers. 
+                There are of course more exotic explorers. 
                 In AlphaGo, two initial policies were trained on expert-level play in a supervised learning fashion. 
                 These policies were then applied as explorers to guide training for a Monte Carlo Tree Search, with only good actions (determined from the existing policies) being taken to subsequently train the MCTS model. 
-                In this way, pruning of the tree branches can be achieved by neglecting to populate the tree with poor actions and an unfeasibly large tree (due to Go’s branching factor and depth) can be avoided.  
+                In this way, pruning of the tree branches can be achieved by neglecting to populate the tree with poor actions, and an unfeasibly large tree (due to Go’s branching factor and depth) can be avoided.  
                 <br><br>
-                Although AlphaGo uses a hybrid supervised-RL approach, it still has an RL exploration component, and the above methods still may run into pitfalls relative to fully supervised learning methods, where the data owner is in control of all data the model sees. 
-                With supervised learning, the data owner is hopefully mindful to include varied enough representations of objects (if a classification task) to allow the network to generalise, however no such guarantees can be given with the data RL explorers uncover for RL models.  
+                Although AlphaGo uses a hybrid supervised-RL approach, it still has an RL exploration component, and the above methods may still run into pitfalls relative to fully supervised learning methods, where the data owner is in control of all data the model sees. 
+                With supervised learning, the data owner would hopefully be mindful to include enough variation in representations of objects (if a classification task) to allow the network to generalise; however, no such guarantees can be given with the data RL explorers uncover for RL models.  
                 <br><br>
                 Another issue with the above methods is that the main mechanism for exploration is to take random actions. 
                 This is by far the most simple approach and very data inefficient. 
@@ -102,21 +103,20 @@
             <h3>Looking to Trackmania for Why We Need Causal Reasoning </h3>
             <p>
                 One example that gives interesting insight into the case for causal reasoning in aiding exploration is by assessing how to optimise play in a game like Trackmania. 
-                Throughout the last 10 years there has been an active community working towards improvements with track times, be it evolutionary improvement such as optimising cornering or revolutionary improvement such as finding new routes. 
+                Throughout the last 10 years, there has been an active community working towards improvements with track times, be it evolutionary improvement, such as optimising cornering or revolutionary improvement, such as finding new routes. 
                 One particularly inspiring example is the <a href="https://www.youtube.com/watch?v=_b67SC7Y4qA">progress made over the D07-Race</a> (skip to 16 minutes in for a particular example I’ll look into). 
                 In the final track skip, human players formed a hypothesis that a very specific and technical jump could be used to reduce lap time. 
                 What was this hypothesis formed on? 
-                It was causal reasoning based on priors informed by physics – watching the trajectory of the car, forming an idea of what kinds of trajectories could be taken, imagining what the trajectory would look like if the car took the perfect line to test the hypothesis.  
+                It was causal reasoning based on priors informed by physics: watching the trajectory of the car, forming an idea of what kinds of trajectories could be taken, imagining what the trajectory would look like if the car took the perfect line to test the hypothesis.  
                 <br><br>
-                Of course, an imagination/hypothesis could be wrong, but this is still in a class of its own relative to kind of exploration we see with RL agents today. 
-                And after many hundreds of cumulative hours by the drivers looking to validate their hypothesis, they were finally vindicated: one gamer eventually completed the jump. 
+                Of course, an imagination/hypothesis could be wrong, but this is still in a class of its own relative to the kind of exploration we see with RL agents today. 
+                And after many hundreds of cumulative hours by the drivers looking to validate their hypothesis, they were finally vindicated; one gamer eventually completed the jump. 
                 The fact that this was such a difficult technical jump in such a particular sub-section of the track makes me imagine how infinitesimally small the sequence of actions (given the branching factor of the game) was within the space of possibilities, and what the chances of this happening would be, given random exploration. 
                 Not only that, but given how RL agents tend to balance exploitation of previous best results with exploration, would the agent just give up and start exploiting what it currently knows before ever managing to complete the jump?
             </p>
             <h3>The Role of the Neural Network When Using Causal Reasoning: Thinking Fast and Slow</h3>
             <p>
-                Daniel Kahneman, author of Thinking Fast and Slow, wrote that once chess players have become masters of their game; 
-                they instinctively have a collection of good moves that comes to their mind. 
+                Daniel Kahneman, author of Thinking Fast and Slow, wrote that once chess players have become masters of their game, they instinctively have a collection of good moves that comes to mind. 
                 Of course, there is still slow, thoughtful planning (system 2, in the book) even when you're a master but the initial unconscious choices (system 1) that come to mind are naturally strong. 
                 However, to get to a master level, there does need to be system 2 planning. 
                 You need to calculate and generalise why certain events can occur in the games. 
@@ -125,13 +125,14 @@
                 This is akin to training an RL policy (system 1) on data so that it can quickly map the current observation with a strong action, however the planning to gather the best data requires a good explorer (system 2). 
                 Indeed, at the AAAI-2020 fireside conversation, Kahneman himself said that he currently only sees evidence of system 1 behaviour from our current NN-based ML models (in supervised learning).  
                 <br><br>
-                The problem for explorers again to back to the fact that as soon as you want something more than random exploration it gets very complicated. 
+                The problem for explorers again returns to the fact that as soon as you want something more than random exploration it gets very complicated. 
                 Let’s look at the complications in-depth and what a more sophisticated explorer may look like. 
             </p>
-            <h2>Opinions & Ideas of What a Future Explorer May Entail</h2>
+            <h2>Opinions and Ideas of What a Future Explorer May Entail</h2>
             <h3>Initial Considerations</h3>
             <p>
-                Humans have grown up with physics-based priors and instinctively understand trajectories of cars if they were to leave the ground – indeed, most games are built from a foundation of rules that mirror real life and that humans have already unconsciously integrated into their pattern recognition. 
+                Humans have grown up with physics-based priors and instinctively understand trajectories of cars if they were to leave the ground. 
+                Indeed, most games are built from a foundation of rules that mirror real life, and that humans have already unconsciously integrated into their pattern recognition. 
                 Part of the problem is the unconscious integration of these priors into future calculations and forgetting that RL agents wouldn’t know them, which makes it seem to humans like an easier problem to solve than it really is. 
                 <br><br>
                 The first complication for an explorer that uses more than randomness is that it needs priors to work from. 
@@ -155,7 +156,7 @@
                 <br>
                 <ol>
                     <li>
-                        One component would be your common random-choice based explorer, which can be used if no better options are detected. 
+                        One component would be your common, random-choice based explorer, which can be used if no better options are detected. 
                     </li>
                     <li>
                         The trained policy to-date can assist in exploiting learnt strong actions.  
@@ -176,35 +177,37 @@
                     </li>
                 </ol>
                 An expansion of point (3) can be made, as this is worryingly vague. 
-                Complications (and further break-down) with physics-based priors, which may constitute a large section of point (3): 
+                Complications (and further break-down) with physics-based priors, which may constitute a large section of point (3), each of which need to be resolved in their own right: 
                 <ol>
                     <li>
-                        Need to recognise the event that can initialise a physics-based hypothesis – in the case of the jump, the event is the car leaving the ground and catching air (the car then starts to follow a physics-based trajectory). 
+                        Need to implement recognition the event that can initialise a physics-based hypothesis. In the case of the jump, the event is the car leaving the ground and catching air (the car then starts to follow a physics-based trajectory). 
                     </li>
                     <li>
                         Need to represent the environment in the correct way, which might not be related well to the initial observation the agent is given. 
                         For example, with Atari games, the agent is often just given the screen print out and expected to make sense if it. 
                         This may be the case with an agent for a game like Trackmania. 
-                        However, this isn’t what humans eventually use to make models: they may see a point source (the car – centre of gravity) which moves along a plane (the track). 
+                        However, this isn’t what humans eventually use to make models; they may see a point source (the car's centre of gravity) which moves along a plane (the track). 
                         The point source has co-ordinates regarding its position and vector for its direction. 
-                        All these things are implicitly computed in the head of players but not represented in the raw observation. 
+                        All these things are implicitly computed in the head of the players but not represented in the raw observation. 
                     </li>
                     <li>
-                        Once the observations are in a state that is simple for equation learning, need to learn the equation that governs the trajectory. 
+                        Once the observations are in a state that is simple for equation learning, a model needs to learn the equation that governs the trajectory. 
                         This means that, previously, the event needs to be recognised as something that initialises a set of rules that can be learnt. 
-                        And then sufficient data needs to be collected to learn the rule. 
-                        Recent advances with application of symbolic regression within networks may be a solution in this regard. 
+                        Furthermore, data needs to be collected to learn the rule. 
+                        Recent advances with application of symbolic regression within networks may be a solution for this challenge. 
                     </li>
                     <li>
                         Can then continue to predict the subsequent observations/car trajectory until the rules cease to apply anymore (when the car lands). 
                         We need to recognise the event that terminates the rules. 
                     </li>
                 </ol>
-                Once these event-driven rules have been learnt, another job is to take them and generalise them to other games where they can be applied. As had been noted above: many games use physics-based priors. This is a level of complexity larger, again, and can tentatively stipulated that is moving into “common sense” territory of AI or even AGI, which is a bold claim and even bolder task to uptake. 
+                Once these event-driven rules have been learnt, another job is to take them and generalise them to other games where they can be applied. 
+                As had been noted above, many games use physics-based priors. 
+                This is a level of complexity larger, again, and can tentatively stipulated that this is moving into “common sense” territory of AI or even AGI, which is a bold claim and even bolder task to uptake. 
             </p>
             <h3>Final Thoughts</h3>
             <p>
-                There is a debate of whether causal reasoning can emerge from NNs given enough compute and network size, based on an argument that as our own brains got larger, humans gained the capacity to reason and form counterfactuals where other animals with smaller brains cannot. 
+                There is a debate as to whether causal reasoning can emerge from NNs given enough compute and network size, based on an argument that as our own brains got larger, humans gained the capacity to reason and form counterfactuals where other animals with smaller brains cannot. 
                 But why take the chance on it emerging when we don’t truly understand how the human brain works (so we can't even be sure our ML NNs have the key pieces of architecture in place to help give rise to emergence if it can) and when we can explicitly write causal reasoning logic with our current languages? 
                 <br><br>
                 Although there are many complications with creating a more sophisticated, human-inspired explorer to which there are no strong solutions to-date, it does still seem reasonable to look for a more sophisticated way of exploring space in games, given the weak manner in which exploration is undertaken currently. 
