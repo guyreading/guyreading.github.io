@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+
+<head>
+	<link rel='icon' type='image/x-icon' href='../favicon.ico' />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://latex.now.sh/style.min.css" />
+    <meta property="og:title" content="PPO Improvements">
+</head>
+
+
+<body id="top" class>
+    <center><a href="../blog.html">Back to Blogs Home</a></center>
+    <h1>PPO Improvements</h1>
+    <p class="author">Guy Reading <br> June 06, 2022</p>
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            Some notes on percieved weaknesses of PPO and potentially how to improve them.
+        </p>
+    </div>
+    <main>
+        <article>
+            <h2>List of Weaknesses</h2>
+            <h3>Introduction</h3>
+            <p>
+                <ul>
+                    <li>
+                        <b>The value function for a specific state will only be correct if our agent picks the same set of actions starting from that state until the end of the game. </b>
+                        If the agent picks a different action, the development of the game will be different and rewards, thus value of the state, will be different to previously calculated. 
+                        This is problematic as the agent needs to explore different actions for each state to discover the optimal action. 
+                        This is also problematic when using Explained Variance to make sense of whether the agent has learnt to value each state successfully. 
+                        However when
+
+                    </li>
+                </ul>
+            </p>
