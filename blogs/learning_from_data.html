@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+
+<head>
+	<link rel='icon' type='image/x-icon' href='../favicon.ico' />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://latex.now.sh/style.min.css" />
+    <meta property="og:title" content="PPO Improvements">
+</head>
+
+
+<body id="top" class>
+    <center><a href="../blog.html">Back to Blogs Home</a></center>
+    <h1>System Two Learning From Data</h1>
+    <p class="author">Guy Reading <br> June 06, 2022</p>
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            Some notes on percieved weaknesses of PPO and potentially how to improve them.
+        </p>
+    </div>
+    <main>
+        <article>
+            <h2>List of Weaknesses</h2>
+            <h3>Introduction</h3>
+            <p>
+                I believe that RL is the solution to a lot more problems/tasks than supervised learning can solve.
+                RL, at its core, is the process of making decisions under uncertainty. 
+                In contrast, supervised learning is almost by its nature, narrow in scope, as the labels given are for a specific category or task.
+
+                RL is currently good at doing huge raw statistical calculations. 
+                This excels in an area that humans aren't good at. 
+                However, RL model aren't good at what humans are good at: more general problem solving using different techniques. 
+                How do we get RL to get better at more general problem solving?
+            </p>
+            <h3>More Than One Way To Approach A Problem</h3>
+            <p>
+                The reason humans are so good at problem solving is that they can look at different ways of solving a problem. 
+                Currently ML only uses one way of problem-solving: statitical methods. 
+                In the short term, we can hard-code more ways to problem solve so that there are multiple different types of processes occuring on the same dataset. 
+                In the long term, the best solution would be to create an algorithm that discovers new problem-solving methods for itself.
+            </p>

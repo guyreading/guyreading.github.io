@@ -67,10 +67,11 @@
                 <br><br>
                 The second main explorer is an off-policy explorer. 
                 These are separate from the policy that gets trained on the data. 
-                If you treat the policy to be trained as an unconscious quick reaction (we’ll revisit analogy this later), you could treat the off-policy explorer as conscious, thoughtful decision-making, trying to improve performance. 
-                There have been many different off-policy explorers to date. 
-                With one such off-policy model, the DQN, there is a dedicated explorer which essentially explorers based on trading off pure “exploration” (random direction) with “exploitation” (looking at the best previous result and continuing in that direction). 
-                However, like the on-policy explorer, the use of randomness as the main mechanism for exploration still seems naïve.  
+                This opens up the possibility of creating a more sophisticated explorer that does more than just work from current best guesses of the policy + randomness, however the most successful cases still regress back to simpilicity and explore with random action choice. 
+                One successful example of such an off-policy model, with DQN, is where there is a dedicated explorer which essentially explorers based on trading off pure “exploration” (random direction) with “exploitation” (looking at the best previous result and continuing in that direction). 
+                Like the on-policy explorer, the use of randomness as the main mechanism for exploration still seems naïve.  
+                If we were to re-imagine the off-policy explorer, and treat the policy to be trained as an unconscious quick reaction (we’ll revisit analogy this later), you could possibly treat the off-policy explorer as a more deliberate decision-maker in trying to improve performance. 
+                But for now let's wrap up with looking at explorers.
                 <br><br>
                 There are of course more exotic explorers. 
                 In AlphaGo, two initial policies were trained on expert-level play in a supervised learning fashion. 
