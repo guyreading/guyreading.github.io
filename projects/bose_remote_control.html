@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+
+<head>
+	<link rel='icon' type='image/x-icon' href='../favicon.ico' />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://latex.now.sh/style.min.css" />
+    <meta property="og:title" content="Bose Volume Control Pod Remote Control">
+</head>
+
+<center><button id="dark-mode-toggle">Toggle dark mode</button></center>
+<br>
+
+<script>
+    document
+  .querySelector("#dark-mode-toggle")
+  .addEventListener('click', () => {
+     document.body.classList.toggle("latex-dark");
+  });
+</script>
+
+
+<body id="top" class>
+    <center><a href="../projects.html">Back to Projects Home</a></center>
+    <font size="+1">
+    <h1>Bose Volume Control Pod Remote Control</h1>
+    <p class="author">Guy Reading <br> June 27, 2018</p>
+    <div class="abstract">
+        <h2>Executive Summary</h2>
+        <p>
+            <i>A stepper motor that is coupled to the Bose Volume Control Pod wheel, where you can remotely control the stepper motor to adjust volume. 
+            The stepper motor was controlled by an Arduino, which itself took volume up & down IR commands from a TV remote.</i>
+        </p>
+    </div>
+    <main>
+        <article>
+            <h2>Video Description</h2>
+
+            <center>
+                <iframe width="420" height="315"
+                src="https://www.youtube.com/embed/74JBGCSBqmY">
+                </iframe>
+            </center>
+
+            <h2>The Work</h2>
+            <p>
+                The project was undertaken in two parts:
+
+                <ol>
+                    <li>
+                        Identifying which buttons you'd like to map to volume up & volume down & finding out their HEX key that your specific remote control sends ("finding_out_codes").
+                    </li>
+                    <li>
+                        Mapping the vol up and vol down hex keys to the stepper motor clockwise and anti-clockwise movement ("remote control").
+                    </li>
+                </ol>
+                These two tasks use different arduino codes, which can be found <a href=https://github.com/guyreading/bose-volume-pod_remote-control>here</a>.
+                
+                <br>
+                <b>Hardware:</b><br>
+                <ul>
+                    <li>Nema 17 Stepper Motor</li>
+                    <li>KY-022 Infrared IR Sensor</li>
+                </ul>
+            </p>
+
+        </article>
+    </main>
+    </font>
+
+</body>
