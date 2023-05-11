@@ -33,9 +33,15 @@
             <h3>Introduction</h3>
             <p>
                 There has been a series of success stories regarding the application of Reinforcement Learning (RL) in game settings, including AlphaGo, AlphaStar, OpenAI Five (with DOTA 2), 
-                as well as in the gamification of real-world challenges such as <a href="https://www.deepmind.com/blog/accelerating-fusion-science-through-learned-plasma-control">controlling the plasma shape in nuclear fusion reactors</a> and <a href="https://ai.googleblog.com/2020/04/chip-design-with-deep-reinforcement.html">designing computer chips</a>. 
-                These are inspiring and exhilarating achievements, but when we look under the car bonnet to discover how it all works, we might become disillusioned to find that it is all essentially statistics on steroids. 
-                The fact that this works at all is a testament to the unreasonable effectiveness of (statistical) mathematics in game playing environments, which is ironic, as that is exactly what seems to be missing during this process: reasoning. 
+                as well as in the gamification of real-world challenges such as 
+                <a href="https://www.deepmind.com/blog/accelerating-fusion-science-through-learned-plasma-control">controlling the plasma shape in nuclear fusion reactors</a> 
+                and <a href="https://ai.googleblog.com/2020/04/chip-design-with-deep-reinforcement.html">designing computer chips</a>. 
+                These are inspiring and exhilarating achievements, but when we look under the hood to discover how it all works, 
+                we might become disillusioned to find that it is all essentially statistics on steroids. 
+                That is to say, states-action pairs are explored only with statistical methods to find which action gives the largest payoff, given each state. 
+                That's not to research is lacking in the methods for exploration in RL: <a href="https://arxiv.org/abs/2205.00824">there has been considerable work undertaken in this area.</a> 
+                But given the complexity of some games, the fact that this works at all is a testament to the unreasonable effectiveness of mathematics in game playing environments, 
+                which is ironic, as that is exactly what seems to be missing during the process of finding optimal actions: reasoning. 
                 Do we need reasoning? How can we improve the current state of Reinforcement Learning? 
             </p>
 
