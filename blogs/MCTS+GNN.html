@@ -35,19 +35,23 @@
                 Monte Carlo Tree Search (MCTS) has been used to great effect in the past.
                 It has been used as the algorithm which helped AlphaGo achieve great success in beating the best Go player in the world. 
                 It also has a lot of favourable characteristics: it is interpretable, for example. 
-                You can see the algorithms success rate for any previous state and then see the success rate of any possible next move, thus understanding why it takes a move. 
+                You can see the algorithms success rate for any previous state and then see the success rate of any possible next move, 
+                thus understanding why it takes a move. 
                 However, this also means it needs to save every single possible state's success rate and generate a long graph of many branches for every move at each state. 
                 This quickly become untenable with long games with large branching factors. 
-                Due to this, DeepMind needed some sneaky techniques for making sure their MCTS tree stayed within memory: they used a pre-trained neural network to direct the exploration of the tree, so that only the strong moves were populated. 
+                Due to this, DeepMind needed some sneaky techniques for making sure their MCTS tree stayed within memory: 
+                they used a pre-trained neural network to direct the exploration of the tree, so that only the strong moves were populated. 
                 It was a form of tree pruning. 
-                However there are still inefficiencies: what if there are two different states that are very similar, and this shared information/similarity can be used to make better decisions? 
+                However there are still inefficiencies: what if there are two different states that are very similar, 
+                and this shared information/similarity can be used to make better decisions? 
                 That may be where graph embeddings come into play. 
             </p>
             <h3>Graph Neural Networks</h3>
             <p>
                 Graph Neural Networks (GNNs) are a highly researched area of Machine Learning right now. 
                 It is technique of adapting neural networks so that they can be applied to graphs (like a MCTS tree). 
-                At the core of GNNs are graph embeddings - a learnt translation which takes a node or an edge and places it in a point in the embedding space which has value for prediction, learnt by the GNN. 
+                At the core of GNNs are graph embeddings - a learnt translation which takes a node or an edge and places 
+                it in a point in the embedding space which has value for prediction, learnt by the GNN. 
             </p>
             <h2>The Advantages of Combining MCTS and GNNs</h2>
             <p>
@@ -55,17 +59,23 @@
                 <ol>
                     <li>
                         <b>Similar states can be learnt, which may assist in more quickly learning optimal actions.</b> 
-                        If the optimal action for one state, S1, is learnt, and S1 is found to be very similar to S2, then the optimal action for S2 is close to being found. 
+                        If the optimal action for one state, S1, is learnt, and S1 is found to be very similar to S2, 
+                        then the optimal action for S2 is close to being found. 
                     </li>
                     <li>
                         <b>The process of finding the optimal state is closer to an interpretable reasoning process.</b> 
-                        When someone asks me why I took a certain move, I may reply, "because these specific elements are the most important in consideration for the move, and given them, action A is the best." 
+                        When someone asks me why I took a certain move, I may reply, "because these specific elements 
+                        are the most important in consideration for the move, and given them, action A is the best." 
                         I may not have made the optimal move but at least I can explain why I did it. 
-                        By interrogating the dimensions of the latent space used in the graph embeddings, we may be able to associate them with specific attributes of the game, in the same way that GAN architects have found directions in the GAN latent space that relates to car colour, car height, car orientation, etc. 
-                        If we are able to associate them with specific attributes of the game, we can then interrogate which dimensions the MCTS algorithm uses to take its next action, thus understanding a reasoning process for why it took that decision. 
+                        By interrogating the dimensions of the latent space used in the graph embeddings, we may be able to 
+                        associate them with specific attributes of the game, in the same way that GAN architects have found 
+                        directions in the GAN latent space that relates to car colour, car height, car orientation, etc. 
+                        If we are able to associate them with specific attributes of the game, we can then interrogate which 
+                        dimensions the MCTS algorithm uses to take its next action, thus understanding a reasoning process 
+                        for why it took that decision. 
                     </li>
                     <li>
-                        <b>Compresssion of the state space. </b>
+                        <b>Compression of the state space. </b>
                         It was already stated that DeepMind needed to use a few tricks to make sure AlphaGo didn't expand beyond memory limits. 
                         This is also the power of most neural networks today: they compress the way in which elements can be combined by using latent spaces. 
                         In this way, MCTS may be able to leverage the graph embeddings to remain within memory constraints while still learning powerful actions.
