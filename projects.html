@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/accordion.css">
 </head>
 
 <body>
@@ -91,7 +92,45 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="project__sidebar">
-                        <div class="Projects">
+                        <div class="accordion-body">
+                            <!-- created from https://www.freecodecamp.org/news/build-an-accordion-menu-using-html-css-and-javascript/ -->
+                            <div class="accordion">
+                                <h1>Projects</h1>
+                                <hr>
+                                <div class="container">
+                                    <div class="label">TerraBot</div>
+                                    <div class="content">
+                                        A Terra Mystica (board game) Faction Picker. 
+                                        The <a href="./projects/terrabot.html">front end interface</a> gives a GUI where you can see how a 
+                                        Terra Mystica starting state changes average final scoring for each faction.
+                                        The full code can be found at the <a href="https://github.com/guyreading/terrabot">TerraBot github repository.</a>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="container">
+                                    <div class="label">Remote Control Adaptor</div>
+                                    <div class="content">                                    
+                                        <a href="./projects/bose_remote_control.html">Bose Volume Control Pod Remote Control</a>
+                                        A stepper motor that is coupled to the Bose Volume Control Pod wheel, where you can remotely control the stepper motor to adjust volume. 
+                                        The stepper motor was controlled by an Arduino, which itself took volume up & down IR commands from a TV remote.
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="container">
+                                    <div class="label">2nd Place CAGE Solution</div>
+                                    <div class="content">                                    
+                                        I led the Raytheon SRG team for our entry to the <a href="https://github.com/cage-challenge/cage-challenge-1">CAGE challenge</a>: a blue vs red 
+                                        cyber-security Reinforcement Learning competition.
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                        <script src="js/accordion.js" type="text/javascript"></script>
+                    </body>
+
+
+                        <!-- <div class="Projects">
                             <h2 style="font-family:verdana">Projects</h2>
                             <br>
                             <h3 style="font-family:verdana">Personal</h3> 
@@ -118,7 +157,7 @@
                                     cyber-security Reinforcement Learning competition.
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
