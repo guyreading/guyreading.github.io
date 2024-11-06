@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+
+<head>
+	<link rel='icon' type='image/x-icon' href='../favicon.ico' />
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> 
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://latex.now.sh/style.min.css" />
+    <meta property="og:title" content="PPO Improvements">
+</head>
+
+
+<body id="top" class>
+    <center><a href="../blog.html">Back to Blogs Home</a></center>
+    <h1>Why RL Will Win Out Over SL For ASI Long-Term</h1>
+    <p class="author">Guy Reading <br> June 06, 2022</p>
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            My views on why reinforcement learning (RL) will be the solution to advanced super-intelligence (ASI), 
+            not supervised learning (SL).
+        </p>
+    </div>
+    <main>
+        <article>
+            <h2>Introduction</h2>
+            <p>
+                When we talk about ASI, we imagine a computer that is able to out-perform the thinking of a human. 
+                And with the advent of LLMs & generative AI, we might start thinking that supervised learning is how 
+                we'll get there. There are a few issues I have (but I'm not smart enough to do any better) with 
+                the current state of the art of LLMs, including that they're currently just a statistical mapping of 
+                an input to an output (which means that they don't understand what or why they're doing what they're doing), 
+                but in this post I'd like to focus on just one issue.
+            </p>
+            <h2>"The Issue"</h2>
+            <p>
+                This issue is: supervised learning models learn from data. Human data. So, the SL models will only be as good 
+                as the humans that they learn from. Even worse: they'll probably end up being as good as the AVERAGE human, as 
+                they're training on large datasets and looking to output in a way that the average of the whole dataset does.
+
+                However, when we think of ASI, we think of agents that can out-perform humans. Currently, as far as I can see, 
+                there is only one ML technique that can do this: RL. RL has trained agents that have beaten the best chess, Go, StarCraft 
+                and DOTA players, to name a few. In some games, the agents have won by a large margin. RL doesn't rely on how the best 
+                humans play, it works on how to play the best game overall, based on only the game rules. This is a stark contrast to 
+                SL.
+            </p>
+            <h2>Final Words</h2>
+            <p>
+                RL still has other issues, including the one mentioned in the introduction: specifically, model-free agents learn using just a statistical mapping of 
+                observations to actions. It doesn't understand why or how it is doing what it is doing. 
+
+                It's also interesting to note how well SL does, even though it's using human data, of which a lot of it is sub-optimal or 
+                has blatant errors. It goes to show the magic of AI at scale, and how humans do a good job, on the largest scale, of not 
+                having systemic errors or mistakes: therefore any particular grammatical error one human makes will be smoothed out by the 
+                larger dataset.  
+                
+                Overall, it'd be interesting to see which technique gets used for which tasks in the future. It seems like some tasks actually work best by regressing 
+                towards the mean: including language tasks and more general gen-AI tasks. Perhaps the intuition here is that if someone spoke 
+                with the words of a 200 IQ person (without consideration for their audience), not many people would understand them. Other tasks look to  
+                require revolutionary changes, such as scientific breakthroughs. It would make sense that RL would eventually be what cracks these aspects. One 
+                thing is for sure: it's exciting to see what will happen in the future.
+            </p>
