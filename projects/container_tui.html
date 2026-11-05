@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Container RL - Play in your browser</title>
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.css">
+<style>
+    html, body { height: 100%; margin: 0; }
+    body { background-color: black; color: #ccc; font-family: verdana, sans-serif; display: flex; flex-direction: column; }
+    a { color: #6cf; }
+    header { text-align: center; padding: 8px 12px; }
+    header p { margin: 4px 0; font-size: 13px; }
+    #status { font-size: 13px; }
+    #terminal-wrap { flex: 1; min-height: 0; padding: 0 12px 12px; }
+    #terminal { height: 100%; }
+    button { background: #222; color: #ccc; border: 1px solid #555; padding: 3px 12px; cursor: pointer; }
+</style>
+</head>
+<body>
+<header>
+    <a href="../projects.html">Back to Projects Home</a>
+    <p>
+        A live session of the <a href="https://github.com/guyreading/container_rl">Container RL</a> game TUI.
+        You are given a throwaway identity: pick a username when asked. Click the terminal and type to play.
+    </p>
+    <p id="status">Connecting...</p>
+    <button id="reconnect" hidden>Reconnect</button>
+</header>
+<div id="terminal-wrap"><div id="terminal"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.js"></script>
+<script>
+if (typeof Terminal === "undefined" || typeof FitAddon === "undefined") {
+    document.getElementById("status").textContent =
+        "Could not load the terminal library (is cdn.jsdelivr.net blocked?).";
+    throw new Error("xterm.js failed to load");
+}
+
+// Public wss:// endpoint of the container_rl web bridge (see container_rl/web_bridge.py).
+// When the page is opened from localhost it talks to a bridge running on the same machine.
+const BRIDGE_URL = ["localhost", "127.0.0.1"].includes(location.hostname)
+    ? "ws://localhost:8765"
+    : "wss://play-container.tech/ws";
+
+const term = new Terminal({ cursorBlink: true, fontSize: 15, convertEol: false });
+const fit = new FitAddon.FitAddon();
+term.loadAddon(fit);
+term.open(document.getElementById("terminal"));
+fit.fit();
+
+const statusEl = document.getElementById("status");
+const reconnectBtn = document.getElementById("reconnect");
+const encoder = new TextEncoder();
+let ws = null;
+
+function setStatus(text, canReconnect) {
+    statusEl.textContent = text;
+    reconnectBtn.hidden = !canReconnect;
+}
+
+function sendResize() {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: "resize", cols: term.cols, rows: term.rows }));
+    }
+}
+
+function connect() {
+    term.reset();
+    setStatus("Connecting...", false);
+    fit.fit();
+    ws = new WebSocket(BRIDGE_URL);
+    ws.binaryType = "arraybuffer";
+    ws.onopen = () => {
+        setStatus("Connected", false);
+        sendResize();
+        term.focus();
+    };
+    ws.onmessage = (event) => {
+        if (event.data instanceof ArrayBuffer) term.write(new Uint8Array(event.data));
+    };
+    let opened = false;
+    ws.addEventListener("open", () => { opened = true; });
+    ws.onclose = (event) => {
+        if (!opened) {
+            setStatus("Could not reach the bridge at " + BRIDGE_URL, true);
+        } else {
+            setStatus(event.reason ? "Disconnected: " + event.reason : "Disconnected", true);
+        }
+    };
+}
+
+term.onData((data) => {
+    if (ws && ws.readyState === WebSocket.OPEN) ws.send(encoder.encode(data));
+});
+window.addEventListener("resize", () => { fit.fit(); sendResize(); });
+reconnectBtn.addEventListener("click", connect);
+
+connect();
+</script>
+</body>
+</html>
